@@ -33,3 +33,10 @@ The trade-off: the scanner is deliberately conservative. Symlinks are skipped ra
 - `RetentionResult` with `path`, `age_seconds`, `deleted`, `error`
 
 `max_age_seconds` must be non-negative; a negative value raises `ValueError`. A missing directory produces an empty report rather than an error.
+
+## Performance
+
+The window keeps a bounded buffer, so `push` is constant time and memory does not
+grow with the length of the stream. `peak` and `trough` are linear in the window
+size, which is the trade that keeps `push` cheap.
+
